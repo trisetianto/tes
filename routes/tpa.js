@@ -20,7 +20,13 @@ con.connect(function(err){
 
 
 router.get('/alllahan', function(req, res) {
-    con.query('SELECT * FROM lahan', function(err,rows){
+    var query = "SELECT l.lahan_id, l.lahan_nama, l.luas, l.curah_hujan, l.kedalaman_air_tanah, l.permeabilitas, l.kepadatan_penduduk, b.biologis_ket, p.produktivitas_ket, a.administrasi_ket, z.zona_penyanga_ket "
+        + "FROM lahan l "
+        + "JOIN biologis b ON l.biologis_id = b.biologis_id "
+        + "JOIN produktivitas p ON l.produktivitas_id = p.produktivitas_id "
+        + "JOIN administrasi a ON l.administrasi_id = a.administrasi_id "
+        + "JOIN zona_penyangga z ON l.zona_penyangga_id = z.zona_penyanga_id ";
+    con.query(query, function(err,rows){
         if(err) throw err;
         res.json(rows);
     });
@@ -49,6 +55,10 @@ router.get('/lahan/:id', function (req, res) {
         res.json(rows);
     });
 });
+
+router.post('/newlahan', function (req, res) {
+
+})
 
 router.get('tes',function (req, res) {
     res.render("view/error");
